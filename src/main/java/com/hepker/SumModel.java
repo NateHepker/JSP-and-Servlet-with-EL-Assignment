@@ -1,147 +1,146 @@
-
 package com.hepker;
+
+import java.math.BigDecimal;
 
 /**
  * This class gets and sets 2 numbers and finds their sum. If either are left
  * blank, SumModel will validate the blank to 0, and state "Not a number" if
  * something that is not a number is entered.
- * 
+ *
  * @author Nate_Hepker
  */
 public class SumModel {
-    private String firstNum = "0";
-    private String secondNum = "0";
-    private String sum = "0";
 
-    /**
-     * Gets the first number.
-     * @return firstNum
-     */
+    private String firstNum;
+    private String secondNum;
+    private String message;
+    private BigDecimal value1;
+    private String error1;
+    private BigDecimal value2;
+    private String error2;
+    private BigDecimal sum;
+
+    public SumModel(String firstNum, String secondNum) {
+        this.firstNum = firstNum;
+        this.secondNum = secondNum;
+    }
+
+    public SumModel() {
+        this.firstNum = "0";
+        this.secondNum = "0";
+    }
+
     public String getFirstNum() {
         return firstNum;
     }
 
-    /**
-     * Sets the first number. 
-     * @param firstNum 
-     */
     public void setFirstNum(String firstNum) {
-        validateNum(firstNum);
-        this.firstNum = blankIsZero(firstNum);
+        this.firstNum = firstNum;
     }
 
-    /**
-     * Gets the second number
-     * @return secondNum
-     */
     public String getSecondNum() {
         return secondNum;
     }
 
-    /**
-     * Sets the second number.
-     * @param secondNum 
-     */
     public void setSecondNum(String secondNum) {
-        validateNum(secondNum);
-        this.secondNum = blankIsZero(secondNum);
+        this.secondNum = secondNum;
     }
 
-    /**
-     * Gets the sum of both numbers
-     * @return sum
-     */
-    public String getSum() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public BigDecimal getValue1() {
+        return value1;
+    }
+
+    public void setValue1(BigDecimal value1) {
+        this.value1 = value1;
+    }
+
+    public String getError1() {
+        return error1;
+    }
+
+    public void setError1(String error1) {
+        this.error1 = error1;
+    }
+
+    public BigDecimal getValue2() {
+        return value2;
+    }
+
+    public void setValue2(BigDecimal value2) {
+        this.value2 = value2;
+    }
+
+    public String getError2() {
+        return error2;
+    }
+
+    public void setError2(String error2) {
+        this.error2 = error2;
+    }
+
+    public BigDecimal getSum() {
         return sum;
     }
 
-    /**
-     * Sets the sum of firstNum and secondNum to sum.
-     * @param sum 
-     */
-    public void setSum(String sum) {
-        sum = sumNums(firstNum, secondNum);
-        validateNum(sum);
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
-    
-    
+
     /**
-     * Validates the numbers by checking if a number is a number and is not 
-     * left blank.
-     * @param str
+     * Validates the numbers by checking if a number is a number and is not left
+     * blank.
+     *
+     * @param num
+     * @param num1or2
      */
-    public void validateNum(String str){
-        if (!isNumber(str) && !str.isBlank()) {
-            throw new IllegalArgumentException("First number enterd is not"
-                    + " a valid number.");
+    public void validateNum(String num, int num1or2) {
+        if (num1or2 == 1 && num == null || num.trim().isEmpty()) {
+            num = "0";
+            setFirstNum(num);
         }
-    }
-    
-    /**
-     * Finds the sum of 2 numbers
-     * @param firstNum
-     * @param secondNum
-     * @return the sum of 2 numbers in a String format.
-     */
-    public String sumNums(String firstNum, String secondNum){
-        double first = 0.0;
-        double second = 0.0;
-        double total;
-        if (isNumber(firstNum)) {
-            first = Double.parseDouble(firstNum);
+        if (num1or2 == 2 && num == null || num.trim().isEmpty()) {
+            num = "0";
+            setSecondNum(num);
         }
-        if (isNumber(secondNum)) {
-            second = Double.parseDouble(secondNum);
+
+        try {
+            if (num1or2 == 1) {
+                setValue1(new BigDecimal(firstNum));
+            }
+        } catch (Exception e) {
+            setError1("First number entered was not a valid number.");
+            setMessage("invalid input");
         }
-        total = first + second;
-        return Double.toString(total);
-    }
-    
-    /**
-     * Sets a blank number field to zero.
-     * @param str
-     * @return 
-     */
-    public String blankIsZero(String str){
-        if(str == null || str.trim().isEmpty()){
-            return str = "0";
-        } else {
-            return str;
-        }
-    }
-    
-    /**
-     * Helper method checks if a string is a number or is not.
-     * @param str
-     * @return true|false
-     */
-    public boolean isNumber(String str){
-        try{
-            str = blankIsZero(str);
-            //parseDouble will fail to parse if not a number
-            double parseDouble = Double.parseDouble(str);
-            return true;
-        }catch(NumberFormatException e){
-            return false;
+
+        try {
+            if (num1or2 == 2) {
+                setValue2(new BigDecimal(secondNum));
+            }
+        } catch (Exception e) {
+            setError2("Second number entered was not a valid number.");
+            setMessage("invalid input");
         }
     }
 
-    private void addTwo() {
-        
-        firstNum = blankIsZero(getFirstNum());
-        secondNum = blankIsZero(getSecondNum());
-        sum = getSum();
-        validateNum(firstNum);
-        validateNum(secondNum);
-        
-        if (!isNumber(firstNum)) {
-            throw new IllegalArgumentException("First number must be a valid number");
-        }else if (!isNumber(secondNum)) {
-            throw new IllegalArgumentException("Second number must be a valid number");
-        }else{
-            sumNums(firstNum, secondNum);
+    /**
+     * Finds the sum of 2 numbers
+     */
+    public void sumNums() {
+        validateNum(this.firstNum, 1);
+        validateNum(this.secondNum, 2);
+        if (this.message.equals("")) {
+            BigDecimal num1 = new BigDecimal(this.firstNum);
+            BigDecimal num2 = new BigDecimal(this.secondNum);
+            BigDecimal sum = num1.add(num2);
+            setMessage(this.message = num1 + " + " + num2 + " = " + sum);
         }
     }
-    
 }

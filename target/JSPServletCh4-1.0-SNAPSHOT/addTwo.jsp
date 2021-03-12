@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : Feb 25, 2021, 8:47:42 PM
+    Document   : addTwo
+    Created on : Mar 6, 2021, 1:48:33 PM
     Author     : Nate Hepker
 --%>
 
@@ -8,13 +8,12 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    
-    
-    String firstNum = request.getParameter("firstNum");
-    String secondNum = request.getParameter("secondNum");
-    SumModel sumModel = new SumModel(firstNum, secondNum);
+    SumModel sumModel = new SumModel();
+    String firstNum = sumModel.getFirstNum();
+    String secondNum = sumModel.getSecondNum();
     String message = sumModel.getMessage();
-    
+    String error1 = sumModel.getError1();
+    String error2 = sumModel.getError2();
 %>
 <!DOCTYPE html>
 <html>
@@ -25,14 +24,13 @@
     <body>
         <h1>Add Two</h1>
         <h1>Addition Assignment</h1>
-        <form action="addTwo" method="POST">
-            <input type="hidden" name="action" value="addTwoForm" />
+        <form action="Sum" method="POST">
             <label for="firstNum">First Number:</label>
             <input type="text" name="firstNum" id="firstNum" value="<%= firstNum %>"><br><br>
             <label for="secondNum">Second Number:</label>
             <input type="text" name="secondNum" id="secondNum" value="<%= secondNum %>"><br><br>
             <input type="submit" value="Submit" /><br><br>
-            <label for="sum">Result: <%= message %></label>
+            <label for="message">Result: <%= message %></label>
         </form>
     </body>
 </html>

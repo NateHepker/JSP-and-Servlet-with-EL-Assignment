@@ -18,6 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 
 public class SumHandlerServlet extends HttpServlet {
 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String firstNum = request.getParameter("firstNum");
+        String secondNum = request.getParameter("secondNum");
+        SumModel sumModel = new SumModel();
+        if (firstNum != null && secondNum != null) {
+            sumModel = new SumModel(firstNum, secondNum);
+            String message = sumModel.getMessage();
+            sumModel.sumNums();
+        }
+        //add the sum model to the request
+        request.getRequestDispatcher("/addTwo.jsp").forward(request, response);
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -30,22 +45,7 @@ public class SumHandlerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "goToForm";
-        }
-        switch (action) {
-            case "addTwoForm":
-                procAddTwoForm(request, response);
-                break;
-            case "addTwo":
-                showAddTwo(request, response);
-                break;
-            case "goToForm":
-            default:
-                goToForm(request, response);
-                break;
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -59,63 +59,16 @@ public class SumHandlerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "goToForm";
-        }
-        switch (action) {
-            case "addTwo":
-                showAddTwo(request, response);
-                break;
-            case "addTwoForm":
-                procAddTwoForm(request, response);
-                break;
-            case "goToForm":
-                goToForm(request, response);
-                break;
-        }
+        processRequest(request, response);
     }
-    
+
     private void procAddTwoForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String firstNum = request.getParameter("firstNum");
+        String secondNum = request.getParameter("secondNum");
         SumModel sumModel = new SumModel();
-        String firstNum = request.getParameter("firstNumber");
-        String secondNum = request.getParameter("secondNumber");
-        String sum = request.getParameter("sum");
-
-        request.setAttribute("firstNumber", firstNum);
-        request.setAttribute("secondNumber", secondNum);
-        request.setAttribute("sum", sum);
-
-        response.sendRedirect("Sum?action=addTwo");
+        String message = sumModel.getMessage();
+        
 
     }
-
-    private void showAddTwo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String firstNum = request.getParameter("firstNumber");
-        String secondNum = request.getParameter("secondNumber");
-        String sum = request.getParameter("sum");
-
-        request.setAttribute("firstNumber", firstNum);
-        request.setAttribute("secondNumber", secondNum);
-        request.setAttribute("sum", sum);
-        request.getRequestDispatcher("/WEB-INF/jsp/view/addTwo.jsp").forward(request, response);
-        //response.sendRedirect("Sum?action=addTwo");
-    }
-
-    private void goToForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/view/addTwoForm.jsp").forward(request, response);
-
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -2,7 +2,7 @@
     Document   : AddTwo
     Created on : Feb 25, 2021, 8:06:39 PM
     Author     : Nate Hepker
---%>
+
 
 <% //scriplets
     String firstNum = (String)request.getAttribute("firstNumber");
@@ -21,4 +21,4 @@
         <label type="text" name="sum" id="sum">result: <%=sum%> </label><br><br>
         <a href="<c:url value="/Sum" />">Return to Add Two Form</a>
     </body>
-</html>
+</html>--%>
