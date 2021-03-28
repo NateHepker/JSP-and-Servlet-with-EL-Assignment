@@ -24,11 +24,22 @@ public class SumHandlerServlet extends HttpServlet {
         String firstNum = request.getParameter("firstNum");
         String secondNum = request.getParameter("secondNum");
         SumModel sumModel = new SumModel();
+
         if (firstNum != null && secondNum != null) {
             sumModel = new SumModel(firstNum, secondNum);
-            String message = sumModel.getMessage();
+            sumModel.setFirstNum(firstNum);
+            sumModel.setSecondNum(secondNum);
+            sumModel.sumNums();
+        } else{
             sumModel.sumNums();
         }
+        
+        request.setAttribute("firstNum", sumModel.getFirstNum());
+        request.setAttribute("secondNum", sumModel.getSecondNum());
+        request.setAttribute("message", sumModel.getMessage());
+        request.setAttribute("error1", sumModel.getError1());
+        request.setAttribute("error2", sumModel.getError2());
+
         //add the sum model to the request
         request.getRequestDispatcher("/addTwo.jsp").forward(request, response);
     }
@@ -62,13 +73,4 @@ public class SumHandlerServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    private void procAddTwoForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String firstNum = request.getParameter("firstNum");
-        String secondNum = request.getParameter("secondNum");
-        SumModel sumModel = new SumModel();
-        String message = sumModel.getMessage();
-        
-
-    }
 }

@@ -8,12 +8,11 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    SumModel sumModel = new SumModel();
-    String firstNum = sumModel.getFirstNum();
-    String secondNum = sumModel.getSecondNum();
-    String message = sumModel.getMessage();
-    String error1 = sumModel.getError1();
-    String error2 = sumModel.getError2();
+    String firstNum = (String)request.getAttribute("firstNum");
+    String secondNum = (String)request.getAttribute("secondNum");
+    String message = (String)request.getAttribute("message");
+    String error1 = (String)request.getAttribute("error1");
+    String error2 = (String)request.getAttribute("error2");
 %>
 <!DOCTYPE html>
 <html>
@@ -24,7 +23,7 @@
     <body>
         <h1>Add Two</h1>
         <h1>Addition Assignment</h1>
-        <form action="Sum" method="POST">
+        <form method="POST" action="Sum">
             <label for="firstNum">First Number:</label>
             <input type="text" name="firstNum" id="firstNum" value="<%= firstNum %>"><br><br>
             <label for="secondNum">Second Number:</label>

@@ -20,14 +20,17 @@ public class SumModel {
     private String error2;
     private BigDecimal sum;
 
-    public SumModel(String firstNum, String secondNum) {
-        this.firstNum = firstNum;
-        this.secondNum = secondNum;
-    }
-
     public SumModel() {
         this.firstNum = "0";
         this.secondNum = "0";
+    }
+    
+    public SumModel(String firstNum, String secondNum) {
+        setFirstNum(firstNum);
+        setSecondNum(secondNum);
+        this.firstNum = getFirstNum();
+        this.secondNum = getSecondNum();
+        
     }
 
     public String getFirstNum() {
@@ -99,20 +102,22 @@ public class SumModel {
      * blank.
      *
      * @param num
-     * @param num1or2
+     * @param temp
      */
-    public void validateNum(String num, int num1or2) {
-        if (num1or2 == 1 && num == null || num.trim().isEmpty()) {
+    public void validateNum(String num, int temp) {
+        // sets firstNum to 0 if set to blank, empty, or null
+        if (temp == 1 && (num == null || num.isBlank())) {
             num = "0";
             setFirstNum(num);
         }
-        if (num1or2 == 2 && num == null || num.trim().isEmpty()) {
+        // sets secondNum to 0 if set to blank, empty, or null
+        if (temp == 2 && (num == null || num.isBlank())) {
             num = "0";
             setSecondNum(num);
         }
 
         try {
-            if (num1or2 == 1) {
+            if (temp == 1 ) {
                 setValue1(new BigDecimal(firstNum));
             }
         } catch (Exception e) {
@@ -121,7 +126,7 @@ public class SumModel {
         }
 
         try {
-            if (num1or2 == 2) {
+            if (temp == 2) {
                 setValue2(new BigDecimal(secondNum));
             }
         } catch (Exception e) {
@@ -134,13 +139,20 @@ public class SumModel {
      * Finds the sum of 2 numbers
      */
     public void sumNums() {
+        // if statement to resolve message throwing null exeption
+        if (this.message == null || this.message.isBlank() || this.message.isEmpty()) {
+            setMessage("");
+        }
+        
         validateNum(this.firstNum, 1);
+        
         validateNum(this.secondNum, 2);
         if (this.message.equals("")) {
-            BigDecimal num1 = new BigDecimal(this.firstNum);
-            BigDecimal num2 = new BigDecimal(this.secondNum);
-            BigDecimal sum = num1.add(num2);
-            setMessage(this.message = num1 + " + " + num2 + " = " + sum);
+            value1 = new BigDecimal(this.firstNum);
+            value2 = new BigDecimal(this.secondNum);
+            sum = value1.add(value2);
+            setSum(sum);
+            setMessage(this.message = value1 + " + " + value2 + " = " + sum);
         }
     }
 }
